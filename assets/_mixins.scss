@@ -1,0 +1,41 @@
+@mixin set-font-values (
+  $font-size: $font-size-base,
+  $font-weight: $font-weight-regular,
+  $font-line-height: $font-size + 8px,
+  $font-family: $font-family-base
+) {
+  font-size: $font-size;
+  font-weight: $font-weight;
+  line-height: $font-line-height;
+  font-family: $font-family;
+}
+
+@mixin set-prop-states-values(
+  $prop,
+  $default-value,
+  $hover-value: $default-value,
+  $active-value: $hover-value,
+) {
+  #{$prop}: $default-value;
+  &:hover {
+    #{$prop}: $hover-value;
+  }
+
+  &:active,
+  &:focus-within {
+    #{$prop}: $active-value;
+  }
+}
+
+@mixin focus-visible (
+  $border-color: $gray-700,
+  $border-width: 5px
+) {
+  &:focus-visible {
+    box-shadow: 0px 0px 0px $border-width $border-color;
+  }
+}
+
+@mixin round {
+  border-radius: 9999px;
+}

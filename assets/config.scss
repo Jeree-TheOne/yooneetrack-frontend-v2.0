@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@700&display=swap');
+@import "mixins";
+// Colors
+$green-600: #1DEE96;
+$green-500: #4AF2AB;
+$green-400: #79FCC4;
+
+$torquoise-600: #3FF2C7;
+$torquoise-500: #63FBD6;
+$torquoise-400: #9BFFE1;
+
+$gray-1000: #151515;
+$gray-900: #242424;
+$gray-800: #323232;
+$gray-700: #4E5354;
+$gray-600: #6E7576;
+$gray-500: #888E8F;
+$gray-400: #D6DEE0;
+$gray-300: #E6EEF0;
+$gray-0: #FFFFFF;
+
+$red-200: #FF3A3A;
+$red-100: #FF5C5C;
+
+$yellow-200: #FBFF26;
+$yellow-100: #FCFF5C;
+
+$error: $red-200;
+$error-light: $red-100;
+
+$warning: $yellow-200;
+$warning-light: $yellow-100;
+
+// Font
+
+$font-family-base: "Golos Text";
+$font-family-brand: "Jura";
+
+$font-size-base: 14px;
+$font-size-large: 16px;
+$font-size-larger: 20px;
+$font-size-small: 12px;
+$font-size-smaller: 8px;
+$font-size-tiny: 6px;
+
+$font-weight-bold: 700;
+$font-weight-semi: 600;
+$font-weight-medium: 500;
+$font-weight-regular: 400;
+
+// Font scheme
+
+@mixin h1 {
+  @include set-font-values(72px, $font-weight-bold)
+}
+
+@mixin h2 {
+  @include set-font-values(56px, $font-weight-bold)
+}
+
+@mixin h3 {
+  @include set-font-values(40px, $font-weight-semi)
+}
+
+@mixin h4 {
+  @include set-font-values(32px, $font-weight-semi)
+}
+
+@mixin h5 {
+  @include set-font-values(28px, $font-weight-semi)
+}
+
+@mixin h6 {
+  @include set-font-values($font-size-larger, $font-weight-semi)
+}
+
+@mixin body-1 {
+  @include set-font-values
+}
+
+@mixin body-2 {
+  @include set-font-values($font-size-large)
+}
+
+@mixin body-3 {
+  @include set-font-values($font-size-larger)
+}
+
+@mixin caption-1 {
+  @include set-font-values($font-size-small)
+}
+
+@mixin overline-1 {
+  @include set-font-values($font-size-smaller)
+}
+
+@mixin overline-2 {
+  @include set-font-values($font-size-tiny, $font-weight-regular, auto)
+}
+
+// Global config
+
+body {
+  background-color: $gray-900;
+  color: $gray-300;
+
+  height: 100dvh;
+  width: 100dvw;
+}
+
+body, body > div {
+  height: 100dvh;
+  width: 100dvw;
+  overflow: hidden;
+}
+
+*, *::after, *::before {
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+
+  transition-timing-function: ease-out;
+
+  @include body-1;
+}
+
