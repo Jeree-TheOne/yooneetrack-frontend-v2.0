@@ -1,36 +1,26 @@
 <script setup lang="ts">
-// eslint-disable-next-line import/named
-import { isEqual } from 'lodash'
-
 const slots = useSlots()
 
 const props = defineProps({
-  value: { type: undefined as unknown as PropType<any>, default: undefined },
   items: { type: Array as PropType<any[]>, default: () => [] },
+  values: { type: Array as PropType<any[]>, default: () => [] },
   itemText: { type: String, default: 'text' },
   itemValue: { type: String, default: 'value' }
 })
 
-const emits = defineEmits([ 'change', 'update:show' ])
-
 const options = computed(() => {
-  if (slots.option) return props.items
+  if (slots.option) return props.items.filter(item => !props.values.includes(item))
   return props.items.map(item => ({
     text: Object.prototype.hasOwnProperty.call(item, props.itemText) ? String(item[props.itemText]) : item,
     value: Object.prototype.hasOwnProperty.call(item, props.itemValue) ? item[props.itemValue] : item
-  }))
+  })).filter(item => !props.values.includes(item.value))
 })
 
-const isOptionChecked = (option: any) => {
-  if (slots.option) return option[props.itemValue] === props.value
-
-  return isEqual(option.value, props.value)
-}
+const emits = defineEmits([ 'change', 'update:show' ])
 
 const optionClickHandler = (option: any) => {
-  if (isOptionChecked(option)) return
-  if (slots.option) return emits('change', option[props.itemValue])
-  emits('change', option.value)
+  if (slots.option) return emits('change', [ ...props.values, option[props.itemValue] ])
+  emits('change', [ ...props.values, option.value ])
 }
 
 const updateShow = (isShow: boolean) => {
@@ -40,24 +30,23 @@ const updateShow = (isShow: boolean) => {
 
 <template>
   <CommonVMenu
-    class="v-select"
-    card-class="v-select__card"
+    class="v-multi-select"
+    card-class="v-multi-select__card"
     v-bind="$attrs"
     @toggle="updateShow"
   >
     <template #activator="{ attrs }">
       <slot
-        class="v-select__activator"
+        class="v-multi-select__activator"
         name="activator"
         :attrs="attrs"
       />
     </template>
-
-    <div class="v-select__options">
+    <div v-if="options.length" class="v-multi-select__options">
       <CommonVButton
         v-for="(option, index) in options"
         :key="index"
-        class="v-select__option"
+        class="v-multi-select__option"
         text
         @click="optionClickHandler(option)"
       >
@@ -66,17 +55,19 @@ const updateShow = (isShow: boolean) => {
         </slot>
         <CommonVIcon
           :size="16"
-          class="v-select__option-check-icon"
-          :class="{ 'v-select__option-check-icon--active': isOptionChecked(option) }"
+          class="v-multi-select__option-check-icon"
           name="tickIcon"
         />
       </CommonVButton>
+    </div>
+    <div v-else class="v-multi-select__options">
+      <div class="v-multi-select__option v-multi-select__no-options">No more options available</div>
     </div>
   </CommonVMenu>
 </template>
 
 <style lang="scss" scoped>
-.v-select {
+.v-multi-select {
   width: fit-content;
   &:deep(*) & {
     &__card {
@@ -97,9 +88,9 @@ const updateShow = (isShow: boolean) => {
   }
 
   &__option {
-    min-width: fit-content;
+    width: fit-content;
     min-height: 36px;
-    height: fit-content;
+    width: 100%;
     padding: 8px 18px;
     display: flex;
     justify-content: space-between;
@@ -121,10 +112,13 @@ const updateShow = (isShow: boolean) => {
     opacity: 0;
     transition-duration: 300ms;
     transition-property: opacity, background;
+  }
 
-    &--active {
-      opacity: 1;
-    }
+  &__no-options {
+    white-space: nowrap;
+    color: $gray-600;
+    background-color: transparent !important;
+    @include caption-1;
   }
 }
 </style>

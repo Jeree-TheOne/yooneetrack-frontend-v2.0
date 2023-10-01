@@ -1,39 +1,18 @@
 <script setup lang="ts">
+import { clear } from 'console'
 import { RouteLocationRaw } from 'vue-router'
 
 const props = defineProps({
-  href: {
-    type: String,
-    default: null
-  },
-  to: {
-    type: [ String, Object ] as PropType<RouteLocationRaw>,
-    default: null
-  },
-  text: {
-    type: Boolean,
-    default: false
-  },
-  disabled: {
-    type: Boolean,
-    default: false
-  },
-  filled: {
-    type: Boolean,
-    default: true
-  },
-  outlined: {
-    type: Boolean,
-    default: false
-  },
-  error: {
-    type: Boolean,
-    default: false
-  },
-  loading: {
-    type: Boolean,
-    default: false
-  }
+  href: { type: String, default: null },
+  to: { type: [ String, Object ] as PropType<RouteLocationRaw>, default: null },
+  text: { type: Boolean, default: false },
+  icon: { type: String, default: '' }, // TODO: Add icons enum
+  disabled: { type: Boolean, default: false },
+  filled: { type: Boolean, default: false },
+  outlined: { type: Boolean, default: false },
+  underlined: { type: Boolean, default: false },
+  error: { type: Boolean, default: false },
+  loading: { type: Boolean, default: false }
 })
 
 const classes = computed(() => {
@@ -41,9 +20,11 @@ const classes = computed(() => {
 
   return {
     [`${baseClass}--text`]: props.href || props.text || props.to,
+    [`${baseClass}--icon`]: props.icon,
     [`${baseClass}--disabled`]: props.disabled,
-    [`${baseClass}--filled`]: props.filled && !props.outlined && !props.text && !props.to,
+    [`${baseClass}--filled`]: props.filled,
     [`${baseClass}--outlined`]: props.outlined,
+    [`${baseClass}--underlined`]: props.underlined,
     [`${baseClass}--error`]: props.error
   }
 })
@@ -57,7 +38,9 @@ const classes = computed(() => {
     :href="href"
     :disabled="disabled"
   >
-    <slot />
+    <slot>
+      <CommonVIcon v-if="icon" v-bind="$attrs" :name="icon" />
+    </slot>
   </a>
   <RouterLink
     v-else-if="to"
@@ -67,7 +50,9 @@ const classes = computed(() => {
     :to="to"
     :disabled="disabled"
   >
-    <slot />
+    <slot>
+      <CommonVIcon v-if="icon" v-bind="$attrs" :name="icon" />
+    </slot>
   </RouterLink>
   <button
     v-else
@@ -76,7 +61,9 @@ const classes = computed(() => {
     :class="classes"
     :disabled="disabled"
   >
-    <slot />
+    <slot>
+      <CommonVIcon v-if="icon" v-bind="$attrs" :name="icon" />
+    </slot>
   </button>
 </template>
 
@@ -85,6 +72,7 @@ $base-class: "v-button";
 
 .#{$base-class} {
   height:40px;
+  width: fit-content;
   padding: 8px 14px;
 
   display: inline-flex;
@@ -106,18 +94,19 @@ $base-class: "v-button";
     @include focus-visible;
 
     // Error state
-    @at-root .#{$base-class}--error#{&} {
+    &.#{$base-class}--error {
       color: $gray-0;
       @include set-prop-states-values(background, $error, $error-light, $error);
     }
 
     // Disabled state
-    @at-root .#{$base-class}--disabled#{&} {
+    &.#{$base-class}--disabled {
       background: $gray-600 !important;
     }
   }
 
-  &--outlined {
+  &--outlined,
+  &--underlined {
     background: transparent;
     border: 2px solid;
 
@@ -127,19 +116,25 @@ $base-class: "v-button";
     @include focus-visible;
 
     // Error state
-    @at-root .#{$base-class}--error#{&} {
+    &.#{$base-class}--error {
       @include set-prop-states-values(border-color, $error, $error-light, $error);
       @include set-prop-states-values(color, $error, $error-light, $error);
     }
 
     // Disabled state
-    @at-root .#{$base-class}--disabled#{&} {
+    &.#{$base-class}--disabled {
       border-color: $gray-600 !important;
       color: $gray-600 !important;
     }
   }
 
-  &--text {
+  &--underlined {
+    border-width: 0 0 2px 0;
+    border-radius: 0;
+  }
+
+  &--text,
+  &--icon {
     background: transparent;
 
     @include set-prop-states-values(color, $green-600, $torquoise-600, $green-600);
@@ -148,14 +143,19 @@ $base-class: "v-button";
     @include round;
 
     // Error state
-    @at-root .#{$base-class}--error#{&} {
+    &.#{$base-class}--error {
       @include set-prop-states-values(color, $error, $error-light, $error);
     }
 
     // Disabled state
-    @at-root .#{$base-class}--disabled#{&} {
+    &.#{$base-class}--disabled {
       color: $gray-600 !important;
     }
+  }
+
+  &--icon {
+    height: fit-content;
+    padding: 8px;
   }
 
   &--disabled {

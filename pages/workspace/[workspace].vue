@@ -4,6 +4,7 @@ import Workspace from '@/models/Workspace'
 import WorkspaceAttrs from '@/models/WorkspaceAttrs'
 
 const route = useRoute()
+const router = useRouter()
 
 const workspace = ref(null as unknown as Workspace)
 
@@ -16,6 +17,7 @@ const workspaceAttrs = computed(() => {
 
 onMounted(async () => {
   workspace.value = await WorkspaceService.getOne(route.params.workspace as string)
+  router.push({ name: 'workspace-workspace-desk', params: { ...route.params, desk: 'current' } })
 })
 </script>
 

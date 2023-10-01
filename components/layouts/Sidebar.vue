@@ -16,9 +16,13 @@ onMounted(async () => {
 <template>
   <div class="sidebar__wrapper">
     <div class="sidebar" :class="{'sidebar--expand': isExpand}">
-      <CommonVButton text class="sidebar__button" @click="expandSidebar">
-        <CommonVIcon :size="40" name="menuIcon" />
-      </CommonVButton>
+      <CommonVButton
+        :size="40"
+        icon="menuIcon"
+        text
+        class="sidebar__button"
+        @click.stop="expandSidebar"
+      />
       <div class="sidebar__items">
         <CommonVButton
           v-for="workspace in workspaces"
@@ -59,12 +63,8 @@ onMounted(async () => {
 
   &__button {
     position: fixed;
-    margin: 11px;
+    margin: 7px;
     z-index: 5;
-
-    width: 48px;
-    height: 48px;
-    padding: 0;
 
     @include set-prop-states-values(color, $gray-0, $green-400)
   }
@@ -83,6 +83,7 @@ onMounted(async () => {
 
   &__item {
     display: block;
+    width: 100%;
     text-decoration: none;
     text-overflow: ellipsis;
     overflow: hidden;

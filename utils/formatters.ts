@@ -1,3 +1,5 @@
+import Member from '@/models/Member'
+
 const second = 1000
 const minute = 60 * second
 const hour = 60 * minute
@@ -12,6 +14,10 @@ export function capitalizeFirstLetter(string: string | undefined): string {
 
 export function dateFormatter(date: Date): string {
   return new Date(date).toLocaleString()
+}
+
+export function userName(user: Member): string {
+  return user.firstName && user.secondName ? `${user.firstName}  ${user.secondName}` : user.login
 }
 
 export function fromNumberToTime(number: number): string {

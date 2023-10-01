@@ -112,7 +112,7 @@ body {
 body, body > div {
   height: 100dvh;
   width: 100dvw;
-  overflow: hidden;
+  overflow: scroll;
 }
 
 *, *::after, *::before {

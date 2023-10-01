@@ -20,6 +20,11 @@ const styles = computed(() => {
 
 <style lang="scss" scoped>
 .v-tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
   font-size: 12px;
   width: fit-content;
   padding: 2px 8px;

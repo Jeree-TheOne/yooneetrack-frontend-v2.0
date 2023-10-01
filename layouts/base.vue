@@ -42,6 +42,7 @@ onBeforeMount(() => {
   width: 100%;
 
   &__main-content {
+    overflow: hidden;
     height: 100%;
     width: 100%;
   }

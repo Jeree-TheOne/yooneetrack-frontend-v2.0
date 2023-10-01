@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import User from '@/models/User'
 const { $event } = useNuxtApp()
-const router = useRouter()
-const props = defineProps({
+
+defineProps({
   workspace: {
     type: String,
     default: null
@@ -61,7 +61,6 @@ const changeTheme = (value: boolean) => {
           </div>
         </div>
         <CommonVButton
-          text
           :to="{ name: 'profile' }"
           class="header__menu-item"
         >
@@ -83,7 +82,6 @@ const changeTheme = (value: boolean) => {
           <CommonVSwitch
             class="header__menu-theme"
             @switch="changeTheme"
-            @click.stop
           >
             Theme
           </CommonVSwitch>
@@ -129,6 +127,7 @@ const changeTheme = (value: boolean) => {
 
     &-name {
       background: -webkit-linear-gradient(320deg, $green-600, $torquoise-600);
+      background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
 

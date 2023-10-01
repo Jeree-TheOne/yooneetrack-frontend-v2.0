@@ -22,51 +22,6 @@ const updater = computed(() => {
   return props.workspace.members.find(member => member.id === localTask.value.updaterId) as Member
 })
 
-const performer = computed(() => {
-  return props.workspace.members.find(member => member.id === localTask.value.performerId) as Member
-})
-
-const columnName = computed(() => {
-  return props.workspace.columns.find(column => column.id === localTask.value.columnId)?.name
-})
-
-const rowName = computed(() => {
-  return props.workspace.rows.find(row => row.id === localTask.value.rowId)?.name
-})
-
-const taskTypeName = computed(() => {
-  return props.workspace.taskTypes.find(taskType => taskType.id === localTask.value.taskTypeId)?.name
-})
-
-const deskName = computed(() => {
-  return props.workspace.desks.find(desk => desk.id === localTask.value.deskId)?.name
-})
-
-const userName = (user: Member) => {
-  if (!user) return 'Not assigned'
-  return user.firstName && user.secondName ? `${user.firstName}  ${user.secondName}` : user.login
-}
-
-const columnChange = (columnId: string) => {
-  localTask.value.columnId = columnId
-}
-
-const rowChange = (rowId: string) => {
-  localTask.value.rowId = rowId
-}
-
-const deskChange = (deskId: string) => {
-  localTask.value.deskId = deskId
-}
-
-const taskTypeChange = (taskTypeId: string) => {
-  localTask.value.taskTypeId = taskTypeId
-}
-
-const performerChange = (memberId: string) => {
-  localTask.value.performerId = memberId
-}
-
 watch(() => props.task, async newValue => {
   localTask.value = newValue
 
@@ -94,125 +49,10 @@ watch(() => props.task, async newValue => {
         </div>
         <CommonVDivider vertical />
         <div class="task-card__right-section">
-          <div class="task-card__right-section-titles">
-            <div class="task-card__right-section-title">Desk:</div>
-            <div class="task-card__right-section-title">Task type:</div>
-            <div class="task-card__right-section-title">Status:</div>
-            <div class="task-card__right-section-title">Category:</div>
-            <div class="task-card__right-section-title">Performer:</div>
-            <div class="task-card__right-section-title">Tags:</div>
-          </div>
-          <div class="task-card__right-section-select">
-            <CommonVSelect
-              class="task-card__select"
-              :value="localTask.deskId"
-              :items="workspace.desks"
-              item-text="name"
-              item-value="id"
-              @change="deskChange"
-            >
-              <template #activator="{ attrs }">
-                <CommonVButton
-                  class="task-card__select-button"
-                  v-bind="attrs"
-                  text
-                >
-                  {{ deskName }}
-                </CommonVButton>
-              </template>
-            </CommonVSelect>
-            <CommonVSelect
-              class="task-card__select"
-              :value="localTask.taskTypeId"
-              :items="workspace.taskTypes"
-              item-text="name"
-              item-value="id"
-              @change="taskTypeChange"
-            >
-              <template #activator="{ attrs }">
-                <CommonVButton
-                  class="task-card__select-button"
-                  v-bind="attrs"
-                  text
-                >
-                  {{ taskTypeName }}
-                </CommonVButton>
-              </template>
-            </CommonVSelect>
-            <CommonVSelect
-              class="task-card__select"
-              :value="localTask.columnId"
-              :items="workspace.columns"
-              item-text="name"
-              item-value="id"
-              @change="columnChange"
-            >
-              <template #activator="{ attrs }">
-                <CommonVButton
-                  class="task-card__select-button"
-                  v-bind="attrs"
-                  text
-                >
-                  {{ columnName }}
-                </CommonVButton>
-              </template>
-            </CommonVSelect>
-            <CommonVSelect
-              class="task-card__select"
-              :value="localTask.rowId"
-              :items="workspace.rows"
-              item-text="name"
-              item-value="id"
-              @change="rowChange"
-            >
-              <template #activator="{ attrs }">
-                <CommonVButton
-                  class="task-card__select-button"
-                  v-bind="attrs"
-                  text
-                >
-                  {{ rowName }}
-                </CommonVButton>
-              </template>
-            </CommonVSelect>
-            <CommonVSelect
-              class="task-card__select"
-              :value="localTask.performerId"
-              :items="workspace.members"
-              item-text="email"
-              item-value="id"
-              @change="performerChange"
-            >
-              <template #activator="{ attrs }">
-                <CommonVButton
-                  class="task-card__select-button"
-                  v-bind="attrs"
-                  text
-                >
-                  {{ userName(performer) }}
-                </CommonVButton>
-              </template>
-            </CommonVSelect>
-            <CommonVSelect
-              class="task-card__select"
-              :value="localTask.performerId"
-              :items="workspace.members"
-              item-text="email"
-              item-value="id"
-              @change="performerChange"
-            >
-              <template #activator="{ attrs }">
-                <CommonVButton
-                  class="task-card__select-button"
-                  v-bind="attrs"
-                  text
-                >
-                  {{ userName(performer) }}
-                </CommonVButton>
-              </template>
-            </CommonVSelect>
-          <!-- TODO: TAGS -->
-          </div>
+          <ModalsTaskCardSelectors
+            v-model:task="localTask"
+            :workspace="workspace"
+          />
         </div>
       </div>
     </div>
@@ -266,27 +106,7 @@ $base-class: '.task-card';
   }
 
   &__right-section {
-    height: 100%;
-    display: flex;
-    gap: 8px;
-    width: 80%;
 
-    &-titles,
-    &-select {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-
-      height: 300px;
-
-      gap: 16px;
-    }
-
-    &-title {
-      display: flex;
-      align-items: center;
-      height: 36px;
-    }
   }
 }
 </style>

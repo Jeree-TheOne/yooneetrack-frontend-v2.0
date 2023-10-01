@@ -69,16 +69,20 @@ onMounted(() => {
         @change="deskChange"
       >
         <template #activator="{ attrs }">
-          <CommonVButton outlined class="workspace__select-desk" v-bind="attrs">
+          <CommonVButton underlined class="workspace__select-desk" v-bind="attrs">
             <span class="workspace__select-desk-name">{{ selectedDesk.name }}</span>
             <CommonVIcon :size="16" name="expandDownIcon" />
           </CommonVButton>
         </template>
       </CommonVSelect>
       <CommonVInput v-model="search" placeholder="Search" underlined class="workspace__search" />
-      <CommonVButton text :to="{name: 'workspace-workspace-settings', params: { workspace: route.params.workspace } }" :size="48" class="workspace__settings-button" @click.stop>
-        <CommonVIcon :size="32" name="settingsIcon" />
-      </CommonVButton>
+      <CommonVButton
+        icon="settingsIcon"
+        :to="{ name: 'workspace-workspace-settings', params: { workspace: route.params.workspace } }"
+        :size="32"
+        class="workspace__settings-button"
+        @click.stop
+      />
     </div>
     <CustomDesk
       v-if="selectedDesk.id"
@@ -125,9 +129,6 @@ onMounted(() => {
     height: 40px;
     padding: 10px 14px;
 
-    border-width: 0 0 2px 0;
-    border-radius: 0;
-
     @include set-prop-states-values(color, $green-600, $green-400);
     @include set-prop-states-values(border-color, $gray-700, $green-400);
 
@@ -152,7 +153,6 @@ onMounted(() => {
     justify-content: center;
     margin-left: auto;
     padding: 4px;
-    border-radius: 5px;
 
     @include set-prop-states-values(color, $gray-600, $green-400)
   }

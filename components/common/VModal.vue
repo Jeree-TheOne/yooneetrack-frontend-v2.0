@@ -84,7 +84,7 @@ $base-class: '.v-modal';
       top: 50%;
       transform: translate(-50%, -50%);
       position: fixed;
-      overflow: auto;
+      overflow: visible;
       height: 100vh;
       display: flex;
       justify-content: center;

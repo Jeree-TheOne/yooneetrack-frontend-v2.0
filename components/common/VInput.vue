@@ -72,13 +72,12 @@ const classes = computed(() => {
     <slot name="append-data" />
     <CommonVButton
       v-if="isClearable"
-      text
+      icon="crossIcon"
+      :size="16"
       class="v-input__clear-button"
       @click="clear"
     >
-      <slot name="clear">
-        <CommonVIcon name="crossIcon" />
-      </slot>
+      <slot name="clear" />
     </CommonVButton>
 
   </label>
@@ -121,11 +120,6 @@ $base-class: "v-input";
   }
 
   &__clear-button {
-    transition-duration: 50ms;
-    padding: 8px;
-    height: 32px;
-    width: 32px;
-
     @include set-prop-states-values(color, $gray-300, $torquoise-600, $green-600);
   }
 

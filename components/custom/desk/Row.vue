@@ -34,9 +34,12 @@ const openTaskModal = (taskId: string) => {
     <div class="desk-row__columns">
       <div v-for="column in columns" :key="column.id" class="desk-row__column">
         <CustomDeskTaskCard v-for="task in tasksInColumn(column.id)" v-bind="$attrs" :key="task.id" :task="task" @click="openTaskModal(task.id)" />
-        <CommonVButton class="desk-row__add-card" text :size="40" @click="openAddTaskModal(column.id)">
-          <CommonVIcon :size="32" name="plusIcon" />
-        </CommonVButton>
+        <CommonVButton
+          :size="24"
+          icon="plusIcon"
+          class="desk-row__add-card"
+          @click="openAddTaskModal(column.id)"
+        />
       </div>
     </div>
   </div>
@@ -93,10 +96,6 @@ const openTaskModal = (taskId: string) => {
   }
 
   &__add-card {
-    width: 32px;
-    height: 32px;
-    padding: 4px;
-
     @include set-prop-states-values(color, $gray-500, $green-400);
   }
 }
