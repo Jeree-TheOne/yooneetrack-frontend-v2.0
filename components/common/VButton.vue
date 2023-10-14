@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { clear } from 'console'
 import { RouteLocationRaw } from 'vue-router'
 
 const props = defineProps({

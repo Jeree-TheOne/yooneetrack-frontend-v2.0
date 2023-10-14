@@ -22,7 +22,9 @@ const style = computed(() => {
 </script>
 
 <template>
-  <component :is="icon" :style="style" class="v-icon" />
+  <ClientOnly>
+    <component :is="icon" :style="style" v-bind="$attrs" class="v-icon" />
+  </ClientOnly>
 </template>
 
 <style scoped lang="scss">

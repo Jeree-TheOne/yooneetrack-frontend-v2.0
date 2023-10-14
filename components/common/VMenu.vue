@@ -150,7 +150,7 @@ onMounted(() => {
 
   &__content-wrapper {
     width: fit-content;
-    height: fit-content;
+    height: 100%;
     position: absolute;
     right: 0;
     top: 100%;
@@ -165,6 +165,7 @@ onMounted(() => {
     }
 
     &--right {
+      min-width: 100%;
       right: 0;
     }
 

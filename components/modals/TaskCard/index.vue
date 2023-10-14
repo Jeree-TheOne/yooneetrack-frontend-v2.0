@@ -1,8 +1,5 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import moment from 'moment'
 import Task from '@/models/Task'
-import Member from '@/models/Member'
 import WorkspaceAttrs from '@/models/WorkspaceAttrs'
 
 import TaskService from '@/services/taskService'
@@ -12,15 +9,7 @@ const props = defineProps({
   workspace: { type: Object as PropType<WorkspaceAttrs>, default: () => {} }
 })
 
-const localTask = ref({} as Task)
-
-const creator = computed(() => {
-  return props.workspace.members.find(member => member.id === localTask.value.authorId) as Member
-})
-
-const updater = computed(() => {
-  return props.workspace.members.find(member => member.id === localTask.value.updaterId) as Member
-})
+const localTask = ref<Task>({} as Task)
 
 watch(() => props.task, async newValue => {
   localTask.value = newValue
@@ -42,10 +31,11 @@ watch(() => props.task, async newValue => {
     <div class="task-card__content">
       <div class="task-card__main-block">
         <div class="task-card__left-section">
-          <div v-if="creator" class="task-card__creator">Created by {{ userName(creator) }} {{ moment(localTask.createdAt).fromNow() }}</div>
-          <div v-if="updater" class="task-card__creator">Updated by {{ userName(updater) }} {{ moment(localTask.updatedAt).fromNow() }}</div>
-          <div class="task-card__title">{{ localTask.title }}</div>
-          <div class="task-card__description">{{ localTask.description }}</div>
+          <ModalsTaskCardInfo
+            v-model:task="localTask"
+            :workspace="workspace"
+          />
+          <ModalsTaskCardAddSpentTime class="task-card__add-spent-time" />
         </div>
         <CommonVDivider vertical />
         <div class="task-card__right-section">
@@ -53,7 +43,11 @@ watch(() => props.task, async newValue => {
             v-model:task="localTask"
             :workspace="workspace"
           />
+          <ModalsTaskCardTimeInput v-model="localTask.initialAssessment" class="task-card__assessment" placeholder="Time assessment" />
         </div>
+      </div>
+      <div class="task-card__wall-block">
+        1
       </div>
     </div>
   </CommonVModal>
@@ -65,14 +59,21 @@ $base-class: '.task-card';
 #{$base-class} {
 
   &:deep(.task-card__card-class) {
-    overflow: visible;
-    max-width: 900px;
-    max-height: 90%;
+    max-width: 100%;
+    max-height: 100%;
+    padding: 16px 24px;
+    overflow: auto;
+
+    border-radius: 5px;
   }
 
   &__content {
     width: 100%;
     height: 100%;
+    overflow: visible;
+
+    display: flex;
+    flex-direction: column;
   }
 
   &__main-block {
@@ -84,8 +85,14 @@ $base-class: '.task-card';
     gap: 16px;
   }
 
+  &__wall-block {
+
+  }
+
   &__left-section {
-    width: 120%;
+    display: flex;
+    flex-direction: column;
+    min-width: 500px;
   }
 
   &:deep(.task-card__select) &__select {
@@ -106,7 +113,15 @@ $base-class: '.task-card';
   }
 
   &__right-section {
+    max-width: 300px;
+  }
 
+  &__assessment {
+    margin-top: 6px;
+  }
+
+  &__add-spent-time {
+    justify-content: end;
   }
 }
 </style>

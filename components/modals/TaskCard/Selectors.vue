@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import Task from '@/models/Task'
 import WorkspaceAttrs from '@/models/WorkspaceAttrs'
@@ -12,26 +11,26 @@ const props = defineProps({
 
 const emits = defineEmits([ 'update:task' ])
 
-const localTask = ref({} as Task)
+const localTask = ref<Task>()
 
 const performer = computed(() => {
-  return props.workspace.members.find(member => member.id === localTask.value.performerId) as Member
+  return props.workspace.members.find(member => member.id === localTask.value?.performerId) as Member
 })
 
 const columnName = computed(() => {
-  return props.workspace.columns.find(column => column.id === localTask.value.columnId)?.name
+  return props.workspace.columns.find(column => column.id === localTask.value?.columnId)?.name
 })
 
 const rowName = computed(() => {
-  return props.workspace.rows.find(row => row.id === localTask.value.rowId)?.name
+  return props.workspace.rows.find(row => row.id === localTask.value?.rowId)?.name
 })
 
 const taskTypeName = computed(() => {
-  return props.workspace.taskTypes.find(taskType => taskType.id === localTask.value.taskTypeId)?.name
+  return props.workspace.taskTypes.find(taskType => taskType.id === localTask.value?.taskTypeId)?.name
 })
 
 const deskName = computed(() => {
-  return props.workspace.desks.find(desk => desk.id === localTask.value.deskId)?.name
+  return props.workspace.desks.find(desk => desk.id === localTask.value?.deskId)?.name
 })
 
 const tags = computed(() => {
@@ -63,9 +62,8 @@ const tagsChange = (tags: string) => {
   emits('update:task', { ...props.task, tags })
 }
 
-const a = (tagId: string) => {
-  // console.log(tagId)
-  //
+const removeTags = () => {
+  emits('update:task', { ...props.task, tags: [] })
 }
 
 const performerName = (performer: Member) => {
@@ -82,7 +80,7 @@ watch(() => props.task, newValue => {
   <CommonVCard class="selectors">
     <div class="selectors__title">Desk:</div>
     <CommonVSelect
-      left
+      right
       :value="task.deskId"
       :items="workspace.desks"
       item-text="name"
@@ -101,7 +99,7 @@ watch(() => props.task, newValue => {
     </CommonVSelect>
     <div class="selectors__title">Task type:</div>
     <CommonVSelect
-      left
+      right
       :value="task.taskTypeId"
       :items="workspace.taskTypes"
       item-text="name"
@@ -121,7 +119,7 @@ watch(() => props.task, newValue => {
     </CommonVSelect>
     <div class="selectors__title">Status:</div>
     <CommonVSelect
-      left
+      right
       :value="task.columnId"
       :items="workspace.columns"
       item-text="name"
@@ -140,7 +138,7 @@ watch(() => props.task, newValue => {
     </CommonVSelect>
     <div class="selectors__title">Category:</div>
     <CommonVSelect
-      left
+      right
       :value="task.rowId"
       :items="workspace.rows"
       item-text="name"
@@ -159,7 +157,7 @@ watch(() => props.task, newValue => {
     </CommonVSelect>
     <div class="selectors__title">Performer:</div>
     <CommonVSelect
-      left
+      right
       :value="task.performerId"
       :items="workspace.members"
       item-value="id"
@@ -184,10 +182,9 @@ watch(() => props.task, newValue => {
         </div>
       </template>
     </CommonVSelect>
-    <!-- TODO: IDK THIS SHIT NOT WORKING -->
     <div class="selectors__title">Tags:</div>
-    <!-- <CommonVMultiSelect
-      left
+    <CommonVMultiSelect
+      right
       :values="task.tags"
       :items="workspace.tags"
       item-text="name"
@@ -196,46 +193,29 @@ watch(() => props.task, newValue => {
     >
       <template #activator="{ attrs }">
         <CommonVButton
-          class="selectors__multi-select"
           v-bind="attrs"
           text
         >
-          <div
-            v-if="tags.length"
-            class="selectors__multi-select-items"
-          >
-            <CommonVTag
-              v-for="tag in tags"
-              :key="tag.id"
-              :background="tag.background"
-              :color="tag.color"
-            >
-              {{ tag.name }}
-              <CommonVButton
-                class="selectors__multi-select-remove"
-                :size="12"
-                icon="crossIcon"
-                @click.capture.stop="emits('update:task', { ...props.task, tags: task.tags.filter(t => t !== tag.id) })"
-              />
-            </CommonVTag>
-          </div>
-          <div v-else>
+          <template v-if="tags.length">
+            Selected tags: {{ tags.length }}
+            <CommonVButton icon="crossIcon" :size="14" @click.stop="removeTags" />
+          </template>
+          <template v-else>
             Choose tags
-          </div>
+          </template>
         </CommonVButton>
       </template>
-    </CommonVMultiSelect> -->
+    </CommonVMultiSelect>
   </CommonVCard>
 </template>
 
 <style lang="scss" scoped>
 .selectors {
   height: fit-content;
+  width: 100%;
   display: grid;
-  grid-template-columns: 1fr max(200px, 100%);
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
-  width: fit-content;
-  max-width: 400px;
 
   background-color: $gray-900;
   padding: 14px 22px;
@@ -253,7 +233,7 @@ watch(() => props.task, newValue => {
 
   &__select {
     display: block;
-    width: fit-content;
+    width: 100%;
     max-width: 280px;
     text-align: start;
 
@@ -273,11 +253,14 @@ watch(() => props.task, newValue => {
 
     &-items {
       display: flex;
-      flex-direction: column;
       gap: 8px;
+      width: 100%;
+      flex-wrap: wrap;
+      // overflow-y: auto;
+    }
 
-      max-height: 100px;
-      overflow-y: auto;
+    &-item {
+      width: fit-content;
     }
 
     &-remove {

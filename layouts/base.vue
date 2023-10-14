@@ -5,7 +5,7 @@ import User from '@/models/User'
 
 const router = useRouter()
 
-const user = ref({
+const user = ref<User>({
   login: 'username',
   avatar: 'images/avatar.png'
 } as User)

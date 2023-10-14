@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const props = defineProps({
   modelValue: {
-    type: String,
-    default: ''
+    type: [ String, Number ],
+    default: '' // TODO: Add translation
   },
   clearable: {
     type: Boolean,
@@ -28,15 +28,15 @@ const props = defineProps({
 
 const emits = defineEmits([ 'update:modelValue' ])
 
+const isClearable = computed(() => {
+  return props.clearable && props.modelValue
+})
+
 const input = (e: Event) => {
   const target = (e.target as HTMLInputElement)
   const value = target.value
   emits('update:modelValue', value)
 }
-
-const isClearable = computed(() => {
-  return props.clearable && props.modelValue
-})
 
 const clear = () => {
   if (!isClearable) return
@@ -62,8 +62,8 @@ const classes = computed(() => {
   >
     <slot name="prepend-data" />
     <input
-      class="v-input__input"
       :value="modelValue"
+      class="v-input__input"
       :placeholder="placeholder"
       :disabled="disabled"
       v-bind="$attrs"
@@ -125,10 +125,7 @@ $base-class: "v-input";
 
   &--underlined {
     height: 40px;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-
+    border-width: 0 0 2px 0;
     border-radius: 0;
 
     padding: 10px;

@@ -14,6 +14,7 @@ module.exports = {
       singleline: 'beside',
       multiline: 'below'
     } ],
+    'vue/multi-word-component-names': 'off',
     'vue/no-spaces-around-equal-signs-in-attribute': [ 'error' ],
     'vue/html-closing-bracket-newline': [ 'error' ],
     'vue/no-v-html': 'off',

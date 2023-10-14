@@ -17,14 +17,16 @@ const workspaceAttrs = computed(() => {
 
 onMounted(async () => {
   workspace.value = await WorkspaceService.getOne(route.params.workspace as string)
-  router.push({ name: 'workspace-workspace-desk', params: { ...route.params, desk: 'current' } })
+  router.push({ name: 'workspace-workspace-desk', params: { ...route.params, desk: 'current' }, query: route.query })
 })
 </script>
 
 <template>
-  <NuxtLayout v-if="workspace" :workspace="workspace.name" name="base">
-    <RouterView :workspace="workspaceAttrs" />
-  </NuxtLayout>
+  <div>
+    <NuxtLayout v-if="workspace" :workspace="workspace.name" name="base">
+      <RouterView :workspace="workspaceAttrs" />
+    </NuxtLayout>
+  </div>
 </template>
 
 <style scoped>

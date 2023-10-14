@@ -53,6 +53,7 @@ const updateShow = (isShow: boolean) => {
       />
     </template>
 
+    <!-- TODO: Absolute positioning for options (overflow breaks everything) -->
     <div class="v-select__options">
       <CommonVButton
         v-for="(option, index) in options"
@@ -77,27 +78,37 @@ const updateShow = (isShow: boolean) => {
 
 <style lang="scss" scoped>
 .v-select {
-  width: fit-content;
   &:deep(*) & {
     &__card {
+      width: 100%;
       margin-top: -10px;
       padding: 4px;
       border-radius: 8px;
       max-height: 240px;
       overflow-y: auto;
-      width: fit-content;
       background-color: $gray-1000;
+    }
+
+    &__option-check-icon {
+      opacity: 0;
+      transition-duration: 300ms;
+      transition-property: opacity, background;
+
+      &--active {
+        opacity: 1;
+      }
     }
   }
 
   &__options {
     display: flex;
+    width: 100%;
     flex-direction: column;
     gap: 4px
   }
 
   &__option {
-    min-width: fit-content;
+    width: 100%;
     min-height: 36px;
     height: fit-content;
     padding: 8px 18px;
@@ -111,20 +122,6 @@ const updateShow = (isShow: boolean) => {
     transition-duration: 250ms;
 
     @include set-prop-states-values(background-color, $gray-1000, $gray-900);
-  }
-
-  &__option:hover &__option-check-icon {
-    opacity: 1;
-  }
-
-  &__option-check-icon {
-    opacity: 0;
-    transition-duration: 300ms;
-    transition-property: opacity, background;
-
-    &--active {
-      opacity: 1;
-    }
   }
 }
 </style>

@@ -1,13 +1,8 @@
 <script setup lang="ts">
 const props = defineProps({
-  path: {
-    type: String,
-    required: true
-  },
-  size: {
-    type: [ Number, String ],
-    default: 40
-  }
+  path: { type: String, required: true },
+  size: { type: [ Number, String ], default: 40 },
+  rawSrc: { type: Boolean, default: false }
 })
 
 const size = computed(() => {
@@ -15,7 +10,7 @@ const size = computed(() => {
 })
 
 const image = computed(() => {
-  return import.meta.env.VITE_API_URL + props.path
+  return !props.rawSrc ? import.meta.env.VITE_API_URL + props.path : props.path
 })
 </script>
 

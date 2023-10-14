@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import Task from '@/models/Task'
 import Column from '@/models/Column'

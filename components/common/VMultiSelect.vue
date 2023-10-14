@@ -53,16 +53,11 @@ const updateShow = (isShow: boolean) => {
         <slot name="option" :item="option">
           {{ option.text }}
         </slot>
-        <CommonVIcon
-          :size="16"
-          class="v-multi-select__option-check-icon"
-          name="tickIcon"
-        />
       </CommonVButton>
     </div>
-    <div v-else class="v-multi-select__options">
-      <div class="v-multi-select__option v-multi-select__no-options">No more options available</div>
-    </div>
+    <template v-else>
+      <div class="v-multi-select__no-options">No more options available</div>
+    </template>
   </CommonVMenu>
 </template>
 
@@ -104,17 +99,8 @@ const updateShow = (isShow: boolean) => {
     @include set-prop-states-values(background-color, $gray-1000, $gray-900);
   }
 
-  &__option:hover &__option-check-icon {
-    opacity: 1;
-  }
-
-  &__option-check-icon {
-    opacity: 0;
-    transition-duration: 300ms;
-    transition-property: opacity, background;
-  }
-
   &__no-options {
+    padding: 8px;
     white-space: nowrap;
     color: $gray-600;
     background-color: transparent !important;

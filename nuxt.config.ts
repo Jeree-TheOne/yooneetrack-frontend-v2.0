@@ -17,5 +17,7 @@ export default defineNuxtConfig({
       clientUrl: import.meta.env.VITE_CLIENT_URL
     }
   },
-  plugins: [ '@/plugins/v-click-outside.client.ts' ]
+  plugins: [
+    '@/plugins/v-click-outside.client.ts'
+  ]
 })
