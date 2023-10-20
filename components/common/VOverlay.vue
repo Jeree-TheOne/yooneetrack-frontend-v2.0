@@ -2,8 +2,6 @@
 import { AnimationName, AnimationTransitions } from '@/models/animation'
 import { DEFAULT_ANIMATION_NAME } from '@/constants/animations'
 
-import animationService from '@/services/animationService'
-
 let overlayAnimation: AnimationTransitions
 
 const props = defineProps({
@@ -44,7 +42,7 @@ const leave = (element: HTMLElement, done: Function) => {
 }
 
 onMounted(() => {
-  overlayAnimation = animationService(
+  overlayAnimation = useAnimation(
     props.transition,
     {
       duration: props.transitionDuration

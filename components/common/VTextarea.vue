@@ -105,6 +105,7 @@ watch(() => props.modelValue, () => {
   }
 
   &__textarea {
+    padding: 8px 12px;
     margin: 0;
     width: 100%;
     box-sizing: content-box;

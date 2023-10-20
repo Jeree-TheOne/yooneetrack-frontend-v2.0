@@ -10,7 +10,7 @@ const size = computed(() => {
 })
 
 const image = computed(() => {
-  return !props.rawSrc ? import.meta.env.VITE_API_URL + props.path : props.path
+  return !props.rawSrc ? import.meta.env.VITE_API_URL + 'api/' + props.path : props.path
 })
 </script>
 

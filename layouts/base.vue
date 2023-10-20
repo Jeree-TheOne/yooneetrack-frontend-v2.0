@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import jwtDecode from 'jwt-decode'
-import StorageService from '@/services/storageService'
 import User from '@/models/User'
 
 const router = useRouter()
+const { getItem } = useStorage()
 
 const user = ref<User>({
   login: 'username',
@@ -11,7 +11,7 @@ const user = ref<User>({
 } as User)
 
 const updateUser = () => {
-  const token = StorageService.getItem('token')
+  const token = getItem('token')
   if (!token) return router.push({ name: 'login' })
   user.value = jwtDecode(token)
 }

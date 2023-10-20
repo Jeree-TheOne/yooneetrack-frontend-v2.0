@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import StorageService from '@/services/storageService'
-import AuthService from '@/services/authService'
+import { register as registerFunction } from '@/services/authService'
+const { getItem } = useStorage()
 
 const router = useRouter()
 
@@ -51,10 +51,10 @@ const register = async () => {
 
   disableInputs()
   try {
-    await AuthService.register({ email: user.value.email, password: user.value.password })
+    await registerFunction({ email: user.value.email, password: user.value.password })
     router.push({ name: 'login' }) // TODO: Add notification of success
   } catch (error) {
-    console.log(error) // TODO: Replace with notification
+    // console.log(error) // TODO: Replace with notification
   } finally {
     disableInputs()
   }
@@ -66,7 +66,7 @@ const disableInputs = () => {
 }
 
 onBeforeMount(() => {
-  const token = StorageService.getItem('token')
+  const token = getItem('token')
   user.value.email = history.state.email
   if (!token) return
 

@@ -2,14 +2,14 @@
 import Task from '@/models/Task'
 import WorkspaceAttrs from '@/models/WorkspaceAttrs'
 
-import TaskService from '@/services/taskService'
+import { selectTask } from '@/services/taskService'
 
 const props = defineProps({
   task: { type: Object as PropType<Task>, default: () => {} },
   workspace: { type: Object as PropType<WorkspaceAttrs>, default: () => {} }
 })
 
-const localTask = ref<Task>({} as Task)
+const localTask = ref<Task>()
 
 watch(() => props.task, async newValue => {
   localTask.value = newValue
@@ -17,12 +17,13 @@ watch(() => props.task, async newValue => {
   if (Object.keys(localTask.value).length === 0) return
 
   if (localTask.value.id)
-    localTask.value = await TaskService.select(localTask.value.id)
+    localTask.value = await selectTask(localTask.value.id)
 }, { immediate: true, deep: true })
 </script>
 
 <template>
   <CommonVModal
+    v-if="localTask"
     class="task-card"
     card-class="task-card__card-class"
     fullscreen
@@ -36,18 +37,19 @@ watch(() => props.task, async newValue => {
             :workspace="workspace"
           />
           <ModalsTaskCardAddSpentTime class="task-card__add-spent-time" />
+          <ModalsTaskCardWall :workspace="workspace" :task-id="localTask.id" />
         </div>
-        <CommonVDivider vertical />
         <div class="task-card__right-section">
           <ModalsTaskCardSelectors
             v-model:task="localTask"
             :workspace="workspace"
           />
-          <ModalsTaskCardTimeInput v-model="localTask.initialAssessment" class="task-card__assessment" placeholder="Time assessment" />
+          <ModalsTaskCardTimeInput
+            v-model="localTask.initialAssessment"
+            class="task-card__assessment"
+            placeholder="Time assessment"
+          />
         </div>
-      </div>
-      <div class="task-card__wall-block">
-        1
       </div>
     </div>
   </CommonVModal>

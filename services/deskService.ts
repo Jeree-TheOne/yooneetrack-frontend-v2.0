@@ -1,10 +1,9 @@
-import DeskController from '@/controllers/deskController'
+import api from './api'
+import Desk from '@/models/Desk'
 
-export default class DeskService {
-  static async select(id: string) {
-    try {
-      const { data } = await DeskController.select(id)
-      return data
-    } catch {}
-  }
+export async function selectDesk (id: string) {
+  try {
+    const { data } = await api.get<Desk>(`/desk/${id}`)
+    return data
+  } catch {}
 }

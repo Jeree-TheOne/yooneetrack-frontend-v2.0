@@ -1,13 +1,16 @@
-import WorkspaceController from '@/controllers/workspaceController'
+import api from './api'
+import Workspace from '@/models/Workspace'
 
-export default class WorkspaceService {
-  static async getAll() {
-    const { data } = await WorkspaceController.getAll()
+export async function getAll() {
+  try {
+    const { data } = await await api.get<{id: string, name: string}[]>('/workspace')
     return data
-  }
+  } catch {}
+}
 
-  static async getOne(workspaceId: string) {
-    const { data } = await WorkspaceController.getOne(workspaceId)
+export async function getOne(workspaceId: string) {
+  try {
+    const { data } = await await api.get<Workspace>(`/workspace/${workspaceId}`)
     return data
-  }
+  } catch {}
 }

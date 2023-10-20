@@ -2,8 +2,6 @@
 import { AnimationName, AnimationTransitions } from '@/models/animation'
 import { SLIDE_DOWN } from '@/constants/animations'
 
-import animationService from '@/services/animationService'
-
 let contentAnimation: AnimationTransitions
 
 const enter = (element: HTMLElement, done: Function) => {
@@ -101,7 +99,7 @@ const styles = computed(() => {
 })
 
 onMounted(() => {
-  contentAnimation = animationService(
+  contentAnimation = useAnimation(
     props.transition,
     {
       duration: props.transitionDuration

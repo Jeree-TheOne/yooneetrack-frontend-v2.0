@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import StorageService from '@/services/storageService'
 const router = useRouter()
+const { getItem } = useStorage()
 
 onMounted(() => {
-  const token = StorageService.getItem('token')
-  console.log(history)
+  const token = getItem('token')
+  // console.log(history)
 })
 
 const gotoLogin = () => {

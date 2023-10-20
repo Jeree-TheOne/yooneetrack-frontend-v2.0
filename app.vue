@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import '@/interceptors/axios'
 const { $listen } = useNuxtApp()
 $listen('theme-change', value => {
   // console.log(value)

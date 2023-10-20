@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import WorkspaceService from '@/services/workspaceService'
+import { getAll } from '@/services/workspaceService'
 const isExpand = ref(false)
 
-const workspaces = ref([] as {id: string, name: string}[])
+const workspaces = ref<{id: string, name: string}[]>()
 
 const expandSidebar = () => {
   isExpand.value = !isExpand.value
 }
 
 onMounted(async () => {
-  workspaces.value = await WorkspaceService.getAll()
+  workspaces.value = await getAll()
 })
 </script>
 

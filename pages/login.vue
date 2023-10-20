@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import StorageService from '@/services/storageService'
-import AuthService from '@/services/authService'
+import { login as loginFunction } from '@/services/authService'
 
 const router = useRouter()
+const { setItem, getItem } = useStorage()
 
 const user = ref({
   login: '',
@@ -35,8 +35,8 @@ const login = async () => {
   }
 
   disableInputs()
-  const loginData = await AuthService.login(user.value)
-  if (remember.value) StorageService.setItem('login', user.value)
+  const loginData = await loginFunction(user.value)
+  if (remember.value) setItem('login', user.value)
   disableInputs()
   if (!loginData) return // TODO: Add notification on failed login
   router.push({ name: 'personal' })
@@ -48,10 +48,10 @@ const disableInputs = () => {
 }
 
 onBeforeMount(() => {
-  const token = StorageService.getItem('token')
+  const token = getItem('token')
   user.value.login = history.state.login
-  if (StorageService.getItem('login')) {
-    user.value = StorageService.getItem('login')
+  if (getItem('login')) {
+    user.value = getItem('login')
     remember.value = true
   }
   if (!token) return

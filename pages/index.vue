@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import StorageService from '@/services/storageService'
 const router = useRouter()
+const { getItem } = useStorage()
 
 onBeforeMount(() => {
-  const token = StorageService.getItem('token')
+  const token = getItem('token')
   if (!token) router.push({ name: 'login' })
   return router.push({ name: 'personal' })
 })

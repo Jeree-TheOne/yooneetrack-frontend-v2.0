@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DeskService from '@/services/deskService'
+import { selectDesk } from '@/services/deskService'
 
 import Column from '@/models/Column'
 import Row from '@/models/Row'
@@ -23,7 +23,7 @@ const rows = computed(() => {
 const tasks = ref([] as Task[])
 
 const init = async () => {
-  const desk = await DeskService.select(props.id) // TODO: seaprate desk data and tasks at endpoint
+  const desk = await selectDesk(props.id) // TODO: seaprate desk data and tasks at endpoint
   tasks.value = desk.tasks
 }
 // TODO: Add more filter + interface for this shit

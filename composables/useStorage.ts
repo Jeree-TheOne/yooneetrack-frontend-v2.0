@@ -1,9 +1,9 @@
-export default class StorageService {
-  static getStorage(): Storage {
+export default function useStorage () {
+  function getStorage(): Storage {
     return localStorage
   }
 
-  static setItem(key: string, value: any) {
+  function setItem(key: string, value: any) {
     localStorage.setItem(
       key,
       (typeof value === 'object')
@@ -12,7 +12,7 @@ export default class StorageService {
     )
   }
 
-  static getItem(key: string): any {
+  function getItem(key: string): any {
     const item = localStorage.getItem(key) ?? ''
     if (!item) return item
     try {
@@ -20,10 +20,11 @@ export default class StorageService {
     } catch (error) {
       return item
     }
-    return JSON.parse(item)
   }
 
-  static removeItem(key: string) {
+  function removeItem(key: string) {
     localStorage.removeItem(key)
   }
+
+  return { getStorage, setItem, getItem, removeItem }
 }
